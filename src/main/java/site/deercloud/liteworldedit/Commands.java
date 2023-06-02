@@ -20,9 +20,9 @@ public class Commands implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-                sender.sendMessage(ChatColor.GREEN + "LiteWorldEdit by DeerCloud");
-                sender.sendMessage(ChatColor.GREEN + "使用 /lwe help 查看帮助。");
-                return true;
+            sender.sendMessage(ChatColor.GREEN + "LiteWorldEdit by DeerCloud");
+            sender.sendMessage(ChatColor.GREEN + "使用 /lwe help 查看帮助。");
+            return true;
         }
         if (Objects.equals(args[0], "point") || Objects.equals(args[0], "p")) {
             if (sender instanceof Player) {
@@ -140,6 +140,27 @@ public class Commands implements TabExecutor {
             }
         } else if (Objects.equals(args[0], "help")) {
             print_help(sender);
+        } else if (Objects.equals(args[0], "cancel")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                LiteWorldEdit.instance.getCache().deleteAllJobsOfPlayer(player);
+                sender.sendMessage("已取消。");
+            } else {
+                sender.sendMessage("该命令只能由玩家执行。");
+            }
+        } else if (Objects.equals(args[0], "reload")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                if (!player.isOp()) {
+                    sender.sendMessage("你没有权限。");
+                } else {
+                    LiteWorldEdit.instance.reloadConfig();
+                    sender.sendMessage("已重载配置文件。");
+                }
+            } else {
+                LiteWorldEdit.instance.reloadConfig();
+                sender.sendMessage("已重载配置文件。");
+            }
         } else {
             sender.sendMessage("参数错误。");
         }
@@ -149,7 +170,7 @@ public class Commands implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("point", "p", "points", "fill", "empty", "help");
+            return Arrays.asList("point", "p", "points", "fill", "empty", "cancel", "help", "reload");
         } else if (args.length == 2) {
             switch (args[1]) {
                 case "point":
@@ -165,11 +186,12 @@ public class Commands implements TabExecutor {
 
     public void print_help(CommandSender sender) {
         sender.sendMessage(ChatColor.GREEN + "LiteWorldEdit 帮助");
+        sender.sendMessage(ChatColor.GREEN + "/lwe help - 查看帮助");
         sender.sendMessage(ChatColor.GREEN + "/lwe point|p [点序号(整数)] [x] [y] [z] - 创建点");
         sender.sendMessage(ChatColor.GREEN + "/lwe points - 查看所有点");
         sender.sendMessage(ChatColor.GREEN + "/lwe fill [点序号A] [点序号B] - (在AB点对角线间放置方块 - 需要手持被放置的方块)");
         sender.sendMessage(ChatColor.GREEN + "/lwe empty [点序号A] [点序号B] - (破坏AB点对角线间方块 - 需要拥有下届合金镐)");
-        sender.sendMessage(ChatColor.GREEN + "/lwe help - 查看帮助");
+        sender.sendMessage(ChatColor.GREEN + "/lwe cancel - 取消所有任务");
     }
 
     static public boolean out_of_region(Point A, Point B) {
