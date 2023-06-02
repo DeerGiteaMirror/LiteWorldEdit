@@ -25,20 +25,24 @@ public class Place extends Job {
     public JobErrCode Do() {
         // 超出距离
         if (!in_range(_creator, _location)) {
+            LoggerX.debug("超出距离！");
             return JobErrCode.OUT_OF_RANGE;
         }
         // 跳过非空气方块
         Block raw_block = _world.getBlockAt(_location);
         if (!raw_block.isEmpty()) {
+            LoggerX.debug("目标方块不是空气！");
             return JobErrCode.NOT_AIR_BLOCK;
         }
         // 获取到玩家物品中材料的第一个堆叠
         int stack_index = _inventory.first(_block);
         if (stack_index == -1) {
+            LoggerX.debug("玩家物品中没有该材料！");
             return JobErrCode.NOT_ENOUGH_ITEMS;
         }
         ItemStack stack = _inventory.getItem(stack_index);
         if (stack == null) {
+            LoggerX.debug("获取到的物品为空！");
             return JobErrCode.NOT_ENOUGH_ITEMS;
         }
 

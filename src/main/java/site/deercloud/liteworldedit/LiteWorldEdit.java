@@ -1,9 +1,11 @@
 package site.deercloud.liteworldedit;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import site.deercloud.liteworldedit.Jobs.Job;
+import site.deercloud.liteworldedit.Jobs.JobErrCode;
 import site.deercloud.liteworldedit.Managers.ConfigManager;
 import site.deercloud.liteworldedit.Managers.Cache;
 
@@ -21,9 +23,30 @@ public final class LiteWorldEdit extends JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Job job = _cache.get_one_job();
-                if (job != null) {
-                    job.Do();
+                Job job = _cache.getOneJob();
+                if (job == null) {
+                    return;
+                }
+                // 如果任务不可执行 允许在一个tick内多次执行直到任务可执行
+                int max_retries = 100;
+                JobErrCode re;
+                while ((re = job.Do()) != JobErrCode.OK) {
+                    max_retries--;
+                    if (max_retries <= 0) {
+                        break;
+                    }
+                    if (re.canContinue()) {
+                        job.get_creator().sendTitle("§c警告", "§c" + re.getMessage(), 10, 70, 20);
+                        job = _cache.getOneJob();
+                        if (job == null) {
+                            return;
+                        }
+                    } else {
+                        Player player = job.get_creator();
+                        player.sendTitle("§c错误 任务已取消", "§c" + re.getMessage(), 10, 70, 20);
+                        _cache.deleteAllJobsOfPlayer(player);
+                        return;
+                    }
                 }
             }
         }.runTaskTimer(this, 0, 1);

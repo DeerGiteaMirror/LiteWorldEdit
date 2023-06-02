@@ -2,7 +2,6 @@ package site.deercloud.liteworldedit.JobGenerator;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import site.deercloud.liteworldedit.Jobs.Remove;
 import site.deercloud.liteworldedit.LiteWorldEdit;
@@ -16,7 +15,7 @@ public class Empty {
                 for (int z = Math.min(p1.z, p2.z); z <= Math.max(p1.z, p2.z); z++) {
                     Location location = new Location(world, (double) x, (double) y, (double) z);
                     Remove remove_job = new Remove(location, player);
-                    LiteWorldEdit.instance.getCache().add_job(player, remove_job);
+                    LiteWorldEdit.instance.getCache().addJob(player, remove_job);
                 }
             }
         }

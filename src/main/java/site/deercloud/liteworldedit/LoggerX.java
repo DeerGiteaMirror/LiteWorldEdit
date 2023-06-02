@@ -47,6 +47,7 @@ public class LoggerX {
     }
 
     public static void debug(String message) {
+        if (!_plugin.getConfigMgr().isDebug()) return;
         _logger.info(ChatColor.BLUE + " D | " + message);
     }
 }

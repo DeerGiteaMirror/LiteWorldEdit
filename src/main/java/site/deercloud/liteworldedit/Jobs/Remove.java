@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import site.deercloud.liteworldedit.LoggerX;
 
+import java.util.HashMap;
+
 public class Remove extends Job {
 
     public Remove(Location location, Player player) {
@@ -26,36 +28,48 @@ public class Remove extends Job {
     public JobErrCode Do() {
         // 超出距离
         if (!in_range(_creator, _location)) {
+            LoggerX.debug("超出距离！");
             return JobErrCode.OUT_OF_RANGE;
         }
         Block raw_block = _world.getBlockAt(_location);
         // 跳过不破坏的对象
         if (raw_block.isLiquid() || raw_block.isEmpty() || raw_block.getType().getHardness() == -1) {
+            LoggerX.debug("目标方块是液体或空气或不可破坏！");
             return JobErrCode.NO_BREAKABLE;
         }
         // 获取玩家背包中的下届合金镐
-        int stack_index = _inventory.first(Material.NETHERITE_PICKAXE);
-        if (stack_index == -1) {
+        HashMap<Integer, ?> pickaxes = _inventory.all(Material.NETHERITE_PICKAXE);
+        if (pickaxes.size() == 0) {
             return JobErrCode.NO_PICKAXE;
         }
-        ItemStack pickaxe = _inventory.getItem(stack_index);
+        ItemStack pickaxe = null;
+        Damageable pickaxe_damage = null;
+        for (Integer index : pickaxes.keySet()) {
+            ItemStack p = _inventory.getItem(index);
+            if (p == null) {
+                LoggerX.debug(index + " 获取到的下界合金镐为空！");
+                continue;
+            }
+            ItemMeta pickaxe_meta = p.getItemMeta();
+            if (pickaxe_meta == null) {
+                LoggerX.debug(index + " 获取到的下界合金镐元数据为空！");
+                continue;
+            }
+            if (!(pickaxe_meta instanceof Damageable)) {
+                LoggerX.debug(index + " 无法转换为Damageable！");
+                continue;
+            }
+            // 如果耐久小于10，提示玩家
+            pickaxe_damage = (Damageable) pickaxe_meta;
+            if (pickaxe_damage.getDamage() >= 2031 - 10) {
+                LoggerX.debug(index + " 下界合金镐耐久太低！");
+                continue;
+            }
+            pickaxe = p;
+            break;
+        }
+        // 没有合适的镐
         if (pickaxe == null) {
-            LoggerX.debug("获取到的下界合金镐为空！");
-            return JobErrCode.NO_PICKAXE;
-        }
-        ItemMeta pickaxe_meta = pickaxe.getItemMeta();
-        if (pickaxe_meta == null) {
-            LoggerX.debug("获取到的下界合金镐元数据为空！");
-            return JobErrCode.NO_PICKAXE;
-        }
-        if (!(pickaxe_meta instanceof Damageable)) {
-            LoggerX.debug("无法转换为Damageable！");
-            return JobErrCode.NO_PICKAXE;
-        }
-        // 如果耐久小于10，提示玩家
-        Damageable damageable = (Damageable) pickaxe_meta;
-        if (damageable.getDamage() >= 2031 - 10) {
-            LoggerX.err(_creator, "下界合金镐耐久太低！");
             return JobErrCode.NOT_ENOUGH_DURATION;
         }
         BlockBreakEvent event = new BlockBreakEvent(raw_block, _creator);
@@ -67,9 +81,8 @@ public class Remove extends Job {
             double random = Math.random();
             if (random < 1.0 / (durability + 1)) {
                 // 扣除耐久
-                damageable.setDamage(damageable.getDamage() + 1);
-                pickaxe.setItemMeta((ItemMeta) damageable);
-
+                pickaxe_damage.setDamage(pickaxe_damage.getDamage() + 1);
+                pickaxe.setItemMeta((ItemMeta) pickaxe_damage);
             }
             return JobErrCode.OK;
         } else {

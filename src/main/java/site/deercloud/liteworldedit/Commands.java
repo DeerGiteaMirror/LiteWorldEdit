@@ -3,7 +3,6 @@ package site.deercloud.liteworldedit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -12,8 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import site.deercloud.liteworldedit.JobGenerator.Empty;
 import site.deercloud.liteworldedit.JobGenerator.Fill;
 import site.deercloud.liteworldedit.Jobs.Job;
-import site.deercloud.liteworldedit.Jobs.Place;
-import site.deercloud.liteworldedit.Jobs.Remove;
 import site.deercloud.liteworldedit.Managers.Point;
 
 import java.util.*;
@@ -41,7 +38,7 @@ public class Commands implements TabExecutor {
                             return true;
                         }
                         Point point = new Point(x, y, z, player);
-                        LiteWorldEdit.instance.getCache().add_point(player, index, point);
+                        LiteWorldEdit.instance.getCache().addPoint(player, index, point);
                         sender.sendMessage("点 " + index + " 已设置为 " + x + ", " + y + ", " + z + "。");
                     } catch (NumberFormatException e) {
                         sender.sendMessage("参数错误。");
@@ -55,7 +52,7 @@ public class Commands implements TabExecutor {
         } else if (Objects.equals(args[0], "points")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                Map<Integer, Point> points = LiteWorldEdit.instance.getCache().get_points(player);
+                Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPoints(player);
                 if (points != null) {
                     sender.sendMessage("你创建的点：");
                     for (Map.Entry<Integer, Point> entry : points.entrySet()) {
@@ -68,14 +65,14 @@ public class Commands implements TabExecutor {
             } else {
                 sender.sendMessage("该命令只能由玩家执行。");
             }
-        } else if (Objects.equals(args[0], "place")) {
+        } else if (Objects.equals(args[0], "fill")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 if (args.length == 3) {
                     try {
                         Integer indexA = Integer.parseInt(args[1]);
                         Integer indexB = Integer.parseInt(args[2]);
-                        Map<Integer, Point> points = LiteWorldEdit.instance.getCache().get_points(player);
+                        Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPoints(player);
                         if (points == null) {
                             sender.sendMessage("你没有设置任何点。");
                             return true;
@@ -108,14 +105,14 @@ public class Commands implements TabExecutor {
             } else {
                 sender.sendMessage("该命令只能由玩家执行。");
             }
-        } else if (Objects.equals(args[0], "break")) {
+        } else if (Objects.equals(args[0], "empty")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 if (args.length == 3) {
                     try {
                         Integer indexA = Integer.parseInt(args[1]);
                         Integer indexB = Integer.parseInt(args[2]);
-                        Map<Integer, Point> points = LiteWorldEdit.instance.getCache().get_points(player);
+                        Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPoints(player);
                         if (points == null) {
                             sender.sendMessage("你没有设置任何点。");
                             return true;
@@ -152,14 +149,14 @@ public class Commands implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("point", "p", "points", "place", "break", "help");
+            return Arrays.asList("point", "p", "points", "fill", "empty", "help");
         } else if (args.length == 2) {
             switch (args[1]) {
                 case "point":
                     return Collections.singletonList("[点序号(整数)] [x] [y] [z]");
-                case "place":
+                case "fill":
                     return Collections.singletonList("[点序号A] [点序号B] (需要手持被放置的方块)");
-                case "break":
+                case "empty":
                     return Collections.singletonList("[点序号A] [点序号B] (需要拥有下届合金锄)");
             }
         }
@@ -168,10 +165,10 @@ public class Commands implements TabExecutor {
 
     public void print_help(CommandSender sender) {
         sender.sendMessage(ChatColor.GREEN + "LiteWorldEdit 帮助");
-        sender.sendMessage(ChatColor.GREEN + "/lwe point [点序号(整数)] [x] [y] [z] - 创建点");
+        sender.sendMessage(ChatColor.GREEN + "/lwe point|p [点序号(整数)] [x] [y] [z] - 创建点");
         sender.sendMessage(ChatColor.GREEN + "/lwe points - 查看所有点");
-        sender.sendMessage(ChatColor.GREEN + "/lwe place [点序号A] [点序号B] - (在AB点对角线间放置方块 - 需要手持被放置的方块)");
-        sender.sendMessage(ChatColor.GREEN + "/lwe break [点序号A] [点序号B] - (破坏AB点对角线间方块 - 需要拥有下届合金镐)");
+        sender.sendMessage(ChatColor.GREEN + "/lwe fill [点序号A] [点序号B] - (在AB点对角线间放置方块 - 需要手持被放置的方块)");
+        sender.sendMessage(ChatColor.GREEN + "/lwe empty [点序号A] [点序号B] - (破坏AB点对角线间方块 - 需要拥有下届合金镐)");
         sender.sendMessage(ChatColor.GREEN + "/lwe help - 查看帮助");
     }
 

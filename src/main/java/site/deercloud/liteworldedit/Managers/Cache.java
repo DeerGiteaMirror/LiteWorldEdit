@@ -1,5 +1,9 @@
 package site.deercloud.liteworldedit.Managers;
 
+import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import site.deercloud.liteworldedit.Jobs.Job;
 
@@ -10,43 +14,87 @@ import java.util.Map;
 public class Cache {
     private final Map<String, Map<Integer, Point>> _points;
     private final Map<String, LinkedList<Job>> _jobs;
+    private String _last_jobs_player;   // 上一次被获取任务的玩家uuid
+    private final Map<String, BossBar> _bars;
 
     public Cache() {
         _points = new HashMap<String, Map<Integer, Point>>();
         _jobs = new HashMap<String, LinkedList<Job>>();
+        _bars = new HashMap<String, BossBar>();
     }
 
-    public void add_point(Player player, Integer index, Point point) {
+    public void addPoint(Player player, Integer index, Point point) {
         if (!_points.containsKey(player.getUniqueId().toString())) {
             _points.put(player.getUniqueId().toString(), new HashMap<Integer, Point>());
         }
         _points.get(player.getUniqueId().toString()).put(index, point);
     }
 
-    public void add_job(Player player, Job job) {
+    public void addJob(Player player, Job job) {
         if (!_jobs.containsKey(player.getUniqueId().toString())) {
             _jobs.put(player.getUniqueId().toString(), new LinkedList<Job>());
         }
         _jobs.get(player.getUniqueId().toString()).add(job);
     }
 
-    public Job get_one_job() {
-        for (Map.Entry<String, LinkedList<Job>> entry : _jobs.entrySet()) {
-            if (entry.getValue().size() > 0) {
-                return entry.getValue().removeFirst();
-            }
+    public Job getOneJob() {
+        String player = getNextPlayer();
+        if (player == null) {
+            return null;
         }
-        return null;
+        if (!_jobs.containsKey(player)) {
+            return null;
+        }
+        if (_jobs.get(player).isEmpty()) {
+            return null;
+        }
+        Job job = _jobs.get(player).pop();
+        updateBarOfPlayer(job.get_creator());
+        return job;
     }
-    public Map<Integer, Point> get_points(Player player) {
+
+    public Map<Integer, Point> getPoints(Player player) {
         return _points.get(player.getUniqueId().toString());
     }
 
-    public void delete_player_jobs(Player player) {
-        _jobs.remove(player.getUniqueId().toString());
+    public void deleteAllJobsOfPlayer(Player player) {
+        _jobs.get(player.getUniqueId().toString()).clear();
+        updateBarOfPlayer(player);
     }
 
-    public void delete_player_points(Player player) {
+    public void deletePlayerCache(Player player) {
         _points.remove(player.getUniqueId().toString());
+        _jobs.remove(player.getUniqueId().toString());
+        _bars.remove(player.getUniqueId().toString());
+    }
+
+    public void updateBarOfPlayer(Player player) {
+        if (!_bars.containsKey(player.getUniqueId().toString())) {
+            _bars.put(player.getUniqueId().toString(), Bukkit.createBossBar("§a§lLiteWorldEdit 施工进度", BarColor.GREEN, BarStyle.SOLID));
+            _bars.get(player.getUniqueId().toString()).addPlayer(player);
+        }
+        BossBar bar = _bars.get(player.getUniqueId().toString());
+        bar.setProgress(1);
+        bar.setTitle("§a§lLiteWorldEdit 施工进度 剩余任务: " + _jobs.get(player.getUniqueId().toString()).size());
+        bar.setVisible(_jobs.get(player.getUniqueId().toString()).size() != 0);
+    }
+
+    private String getNextPlayer() {
+        if (_jobs.size() == 0) {
+            return null;
+        }
+        if (_last_jobs_player == null) {
+            return _jobs.keySet().iterator().next();
+        }
+        boolean found = false;
+        for (String key : _jobs.keySet()) {
+            if (found) {
+                return key;
+            }
+            if (key.equals(_last_jobs_player)) {
+                found = true;
+            }
+        }
+        return _jobs.keySet().iterator().next();
     }
 }
