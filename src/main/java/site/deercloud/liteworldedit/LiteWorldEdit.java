@@ -51,6 +51,7 @@ public final class LiteWorldEdit extends JavaPlugin {
             }
         }.runTaskTimer(this, 0, 1);
 
+        Bukkit.getPluginManager().registerEvents(new Events(), this);
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setExecutor(new Commands());
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setTabCompleter(new Commands());
 
