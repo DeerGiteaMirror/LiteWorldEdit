@@ -50,6 +50,7 @@ public class Cache {
             return null;
         }
         if (_jobs.get(player).isEmpty()) {
+            _jobs.remove(player);
             return null;
         }
         Job job = _jobs.get(player).pop();
@@ -88,17 +89,20 @@ public class Cache {
             return null;
         }
         if (_last_jobs_player == null) {
-            return _jobs.keySet().iterator().next();
+            _last_jobs_player = _jobs.keySet().iterator().next();
+            return _last_jobs_player;
         }
         boolean found = false;
         for (String key : _jobs.keySet()) {
             if (found) {
+                _last_jobs_player = key;
                 return key;
             }
             if (key.equals(_last_jobs_player)) {
                 found = true;
             }
         }
-        return _jobs.keySet().iterator().next();
+        _last_jobs_player = _jobs.keySet().iterator().next();
+        return _last_jobs_player;
     }
 }
