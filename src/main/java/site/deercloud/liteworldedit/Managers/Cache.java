@@ -23,11 +23,15 @@ public class Cache {
         _bars = new HashMap<String, BossBar>();
     }
 
-    public void addPoint(Player player, Integer index, Point point) {
+    public boolean addPoint(Player player, Integer index, Point point) {
         if (!_points.containsKey(player.getUniqueId().toString())) {
             _points.put(player.getUniqueId().toString(), new HashMap<Integer, Point>());
         }
+        if (_points.get(player.getUniqueId().toString()).size() >= 20) {
+            return false;
+        }
         _points.get(player.getUniqueId().toString()).put(index, point);
+        return true;
     }
 
     public void addJob(Player player, Job job) {
@@ -63,7 +67,7 @@ public class Cache {
     }
 
     public void deletePlayerCache(Player player) {
-        _points.remove(player.getUniqueId().toString());
+        // _points.remove(player.getUniqueId().toString());
         _jobs.remove(player.getUniqueId().toString());
         _bars.remove(player.getUniqueId().toString());
     }

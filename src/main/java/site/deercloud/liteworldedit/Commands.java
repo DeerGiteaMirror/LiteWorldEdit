@@ -38,7 +38,10 @@ public class Commands implements TabExecutor {
                             return true;
                         }
                         Point point = new Point(x, y, z, player);
-                        LiteWorldEdit.instance.getCache().addPoint(player, index, point);
+                        if (!LiteWorldEdit.instance.getCache().addPoint(player, index, point)) {
+                            sender.sendMessage("点的数量不允许超过20，请使用已有点序号覆盖已有点。");
+                            return true;
+                        }
                         sender.sendMessage("点 " + index + " 已设置为 " + x + ", " + y + ", " + z + "。");
                     } catch (NumberFormatException e) {
                         sender.sendMessage("参数错误。");
