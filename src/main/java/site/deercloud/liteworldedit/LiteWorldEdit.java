@@ -36,7 +36,7 @@ public final class LiteWorldEdit extends JavaPlugin {
                         break;
                     }
                     if (re.canContinue()) {
-                        job.get_creator().sendTitle("§c警告", "§c" + re.getMessage(), 10, 70, 20);
+                        job.get_creator().sendTitle("§e警告", "§e" + re.getMessage(), 10, 70, 20);
                         job = _cache.getOneJob();
                         if (job == null) {
                             return;
