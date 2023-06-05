@@ -100,7 +100,7 @@ public class Place extends Job {
             Inventory boxInv = shulkerBox.getInventory();
             int item_idx = boxInv.first(_block);
             if (item_idx == -1) {
-                return false;
+                continue;
             }
             // 把物品放到玩家物品栏
             _inventory.addItem(boxInv.getItem(item_idx));
