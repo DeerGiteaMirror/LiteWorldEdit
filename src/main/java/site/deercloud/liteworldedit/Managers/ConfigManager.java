@@ -1,6 +1,5 @@
 package site.deercloud.liteworldedit.Managers;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.bukkit.configuration.file.FileConfiguration;
 import site.deercloud.liteworldedit.LiteWorldEdit;
 
