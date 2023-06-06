@@ -43,8 +43,8 @@ public final class LiteWorldEdit extends JavaPlugin {
                         }
                     } else {
                         Player player = job.get_creator();
-                        player.sendTitle("§c错误 任务已取消", "§c" + re.getMessage(), 10, 70, 20);
-                        _cache.deleteAllJobsOfPlayer(player);
+                        player.sendTitle("§c错误 任务已自动暂停", "§c" + re.getMessage(), 10, 70, 20);
+                        _cache.getQueueOf(player).pause();
                         return;
                     }
                 }

@@ -6,7 +6,7 @@
 
     <groupId>site.deercloud</groupId>
     <artifactId>LiteWorldEdit</artifactId>
-    <version>1.5.13-SNAPSHOT</version>
+    <version>1.6.4</version>
     <packaging>jar</packaging>
 
     <name>LiteWorldEdit</name>

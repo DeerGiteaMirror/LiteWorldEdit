@@ -146,7 +146,7 @@ public class Commands implements TabExecutor {
         } else if (Objects.equals(args[0], "cancel")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                LiteWorldEdit.instance.getCache().deleteAllJobsOfPlayer(player);
+                LiteWorldEdit.instance.getCache().getQueueOf(player).cancel();
                 sender.sendMessage("已取消。");
             } else {
                 sender.sendMessage("该命令只能由玩家执行。");
@@ -164,6 +164,22 @@ public class Commands implements TabExecutor {
                 LiteWorldEdit.instance.reloadConfig();
                 sender.sendMessage("已重载配置文件。");
             }
+        } else if (Objects.equals(args[0], "pause")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                LiteWorldEdit.instance.getCache().getQueueOf(player).pause();
+                sender.sendMessage("已暂停。");
+            } else {
+                sender.sendMessage("该命令只能由玩家执行。");
+            }
+        } else if (Objects.equals(args[0], "resume")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                LiteWorldEdit.instance.getCache().getQueueOf(player).resume();
+                sender.sendMessage("已恢复。");
+            } else {
+                sender.sendMessage("该命令只能由玩家执行。");
+            }
         } else {
             sender.sendMessage("参数错误。");
         }
@@ -173,7 +189,7 @@ public class Commands implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("point", "p", "points", "fill", "empty", "cancel", "help", "reload");
+            return Arrays.asList("point", "p", "points", "fill", "empty", "cancel", "pause", "resume", "help", "reload");
         } else if (args.length == 2) {
             switch (args[1]) {
                 case "point":
@@ -195,6 +211,8 @@ public class Commands implements TabExecutor {
         sender.sendMessage(ChatColor.GREEN + "/lwe fill [点序号A] [点序号B] - (在AB点对角线间放置方块 - 需要手持被放置的方块)");
         sender.sendMessage(ChatColor.GREEN + "/lwe empty [点序号A] [点序号B] - (破坏AB点对角线间方块 - 需要拥有下届合金镐)");
         sender.sendMessage(ChatColor.GREEN + "/lwe cancel - 取消所有任务");
+        sender.sendMessage(ChatColor.GREEN + "/lwe pause - 暂停工作");
+        sender.sendMessage(ChatColor.GREEN + "/lwe resume - 恢复工作");
     }
 
     static public boolean out_of_region(Point A, Point B) {
