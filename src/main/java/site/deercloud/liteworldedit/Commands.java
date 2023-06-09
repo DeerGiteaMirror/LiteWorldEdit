@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import site.deercloud.liteworldedit.JobGenerator.Empty;
 import site.deercloud.liteworldedit.JobGenerator.Fill;
+import site.deercloud.liteworldedit.JobGenerator.OverLay;
 import site.deercloud.liteworldedit.Jobs.Job;
 import site.deercloud.liteworldedit.Managers.Point;
 
@@ -33,6 +34,8 @@ public class Commands implements TabExecutor {
             return fillTask(sender, args);
         } else if (Objects.equals(args[0], "empty")) {
             return emptyTask(sender, args);
+        } else if (Objects.equals(args[0], "overlay")) {
+            return overlayTask(sender, args);
         } else if (Objects.equals(args[0], "help")) {
             print_help(sender);
             return true;
@@ -57,8 +60,12 @@ public class Commands implements TabExecutor {
     private static void resumeJobs(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            LiteWorldEdit.instance.getCache().getQueueOf(player).resume();
-            sender.sendMessage("已恢复。");
+            if (LiteWorldEdit.instance.getCache().getQueueOf(player) == null) {
+                sender.sendMessage("你没有正在进行的任务。");
+            } else {
+                LiteWorldEdit.instance.getCache().getQueueOf(player).resume();
+                sender.sendMessage("已恢复。");
+            }
         } else {
             sender.sendMessage("该命令只能由玩家执行。");
         }
@@ -67,8 +74,12 @@ public class Commands implements TabExecutor {
     private static void pauseJobs(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            LiteWorldEdit.instance.getCache().getQueueOf(player).pause();
-            sender.sendMessage("已暂停。");
+            if (LiteWorldEdit.instance.getCache().getQueueOf(player) == null) {
+                sender.sendMessage("你没有正在进行的任务。");
+            } else {
+                LiteWorldEdit.instance.getCache().getQueueOf(player).pause();
+                sender.sendMessage("已暂停。");
+            }
         } else {
             sender.sendMessage("该命令只能由玩家执行。");
         }
@@ -92,8 +103,12 @@ public class Commands implements TabExecutor {
     private static void cancerJobs(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            LiteWorldEdit.instance.getCache().getQueueOf(player).cancel();
-            sender.sendMessage("已取消。");
+            if (LiteWorldEdit.instance.getCache().getQueueOf(player) == null) {
+                sender.sendMessage("你没有正在进行的任务。");
+            } else {
+                LiteWorldEdit.instance.getCache().getQueueOf(player).cancel();
+                sender.sendMessage("已取消。");
+            }
         } else {
             sender.sendMessage("该命令只能由玩家执行。");
         }
@@ -118,7 +133,35 @@ public class Commands implements TabExecutor {
         } else {
             sender.sendMessage("参数错误。");
         }
-        return false;
+        return true;
+    }
+
+    private static boolean overlayTask(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("该命令只能由玩家执行。");
+            return true;
+        }
+        Player player = (Player) sender;
+        if (args.length == 3) {
+            try {
+                Vector2 diagonalPoint = getVector2(sender, args, player);
+                if (diagonalPoint == null) return true;
+                ItemStack items_in_hand = player.getInventory().getItemInMainHand();
+                if (!items_in_hand.getType().isBlock() || items_in_hand.getType() == Material.AIR) {
+                    sender.sendMessage("你手上没有方块。");
+                    return true;
+                }
+                Material material = Material.getMaterial(items_in_hand.getType().name());
+                OverLay.overLay(player, player.getWorld(), diagonalPoint.pointA, diagonalPoint.pointB, material);
+                sender.sendMessage("已添加任务。");
+                return true;
+            } catch (NumberFormatException e) {
+                sender.sendMessage("参数错误。");
+            }
+        } else {
+            sender.sendMessage("参数错误。");
+        }
+        return true;
     }
 
     private static boolean fillTask(CommandSender sender, String[] args) {
@@ -146,7 +189,7 @@ public class Commands implements TabExecutor {
         } else {
             sender.sendMessage("参数错误。");
         }
-        return false;
+        return true;
     }
 
     private static Vector2 getVector2(CommandSender sender, String[] args, Player player) {
@@ -226,21 +269,18 @@ public class Commands implements TabExecutor {
         } else {
             sender.sendMessage("参数错误。");
         }
-        return false;
+        return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("point", "p", "points", "fill", "empty", "cancel", "pause", "resume", "help", "reload");
+            return Arrays.asList("point", "p", "points", "fill", "empty", "overlay", "cancel", "pause", "resume", "help", "reload");
         } else if (args.length == 2) {
-            switch (args[1]) {
-                case "point":
-                    return Collections.singletonList("[点序号(整数)] [x] [y] [z]");
-                case "fill":
-                    return Collections.singletonList("[点序号A] [点序号B] (需要手持被放置的方块)");
-                case "empty":
-                    return Collections.singletonList("[点序号A] [点序号B] (需要拥有下届合金锄)");
+            if (args[0].equals("point") || args[0].equals("p")) {
+                return Collections.singletonList("[点序号(整数)] [x] [y] [z] - 创建点");
+            } else if (args[0].equals("fill") || args[0].equals("empty") || args[0].equals("overlay")) {
+                return Collections.singletonList("[点序号A] [点序号B]");
             }
         }
         return Collections.emptyList();
@@ -253,6 +293,7 @@ public class Commands implements TabExecutor {
         sender.sendMessage(ChatColor.GREEN + "/lwe points - 查看所有点");
         sender.sendMessage(ChatColor.GREEN + "/lwe fill [点序号A] [点序号B] - (在AB点对角线间放置方块 - 需要手持被放置的方块)");
         sender.sendMessage(ChatColor.GREEN + "/lwe empty [点序号A] [点序号B] - (破坏AB点对角线间方块 - 需要拥有下届合金镐)");
+        sender.sendMessage(ChatColor.GREEN + "/lwe overlay [点序号A] [点序号B] - (在选区地面上铺一层方块 - 需要手持被放置的方块)");
         sender.sendMessage(ChatColor.GREEN + "/lwe cancel - 取消所有任务");
         sender.sendMessage(ChatColor.GREEN + "/lwe pause - 暂停工作");
         sender.sendMessage(ChatColor.GREEN + "/lwe resume - 恢复工作");

@@ -50,6 +50,12 @@ public class Cache {
     }
 
     public JobQueue getQueueOf(Player player) {
+        if (!_jobs.containsKey(player.getUniqueId().toString())) {
+            return null;
+        }
+        if (_jobs.get(player.getUniqueId().toString()).isEmpty()) {
+            return null;
+        }
         return _jobs.get(player.getUniqueId().toString());
     }
 
