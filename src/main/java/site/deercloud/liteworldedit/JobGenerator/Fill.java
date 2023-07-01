@@ -17,7 +17,7 @@ public class Fill {
                 for (int z = Math.min(p1.z, p2.z); z <= Math.max(p1.z, p2.z); z++) {
                     Location location = new Location(world, (double) x, (double) y, (double) z);
                     Place place_job = new Place(location, player, block);
-                    LiteWorldEdit.instance.getCache().addJob(player, place_job);
+                    LiteWorldEdit.instance.getCache().getPlayer(player).addJob(place_job);
                 }
             }
         }
