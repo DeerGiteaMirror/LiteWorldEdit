@@ -26,7 +26,7 @@ public class JobQueue {
     public JobQueue(Player player) {
         this.player = player;
         this.bar.addPlayer(player);
-        bar.setVisible(false);
+        this.bar.setVisible(false);
     }
 
     public void add(Job job) {
