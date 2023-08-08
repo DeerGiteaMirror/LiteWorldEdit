@@ -7,6 +7,7 @@ load: STARTUP
 authors: [ Luming ]
 description: 生存用简易创世神。
 website: https://blog.deercloud.site
+folia-supported: true
 commands:
   LiteWorldEdit:
     description: 简易创世神命令

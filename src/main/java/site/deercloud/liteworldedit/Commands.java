@@ -40,7 +40,7 @@ public class Commands implements TabExecutor {
             print_help(sender);
             return true;
         } else if (Objects.equals(args[0], "cancel")) {
-            cancerJobs(sender);
+            cancelJobs(sender);
             return true;
         } else if (Objects.equals(args[0], "reload")) {
             reloadConfigs(sender);
@@ -60,11 +60,11 @@ public class Commands implements TabExecutor {
     private static void resumeJobs(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (LiteWorldEdit.instance.getCache().getQueueOf(player) == null) {
-                sender.sendMessage("你没有正在进行的任务。");
-            } else {
-                LiteWorldEdit.instance.getCache().getQueueOf(player).resume();
+            if (LiteWorldEdit.instance.getCache().getPlayer(player).hasJob()) {
+                LiteWorldEdit.instance.getCache().getPlayer(player).resumeJob();
                 sender.sendMessage("已恢复。");
+            } else {
+                sender.sendMessage("你没有正在进行的任务。");
             }
         } else {
             sender.sendMessage("该命令只能由玩家执行。");
@@ -74,11 +74,11 @@ public class Commands implements TabExecutor {
     private static void pauseJobs(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (LiteWorldEdit.instance.getCache().getQueueOf(player) == null) {
-                sender.sendMessage("你没有正在进行的任务。");
-            } else {
-                LiteWorldEdit.instance.getCache().getQueueOf(player).pause();
+            if (LiteWorldEdit.instance.getCache().getPlayer(player).hasJob()) {
+                LiteWorldEdit.instance.getCache().getPlayer(player).pauseJob();
                 sender.sendMessage("已暂停。");
+            } else {
+                sender.sendMessage("你没有正在进行的任务。");
             }
         } else {
             sender.sendMessage("该命令只能由玩家执行。");
@@ -100,14 +100,14 @@ public class Commands implements TabExecutor {
         }
     }
 
-    private static void cancerJobs(CommandSender sender) {
+    private static void cancelJobs(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (LiteWorldEdit.instance.getCache().getQueueOf(player) == null) {
-                sender.sendMessage("你没有正在进行的任务。");
-            } else {
-                LiteWorldEdit.instance.getCache().getQueueOf(player).cancel();
+            if (LiteWorldEdit.instance.getCache().getPlayer(player).hasJob()) {
+                LiteWorldEdit.instance.getCache().getPlayer(player).cancelJob();
                 sender.sendMessage("已取消。");
+            } else {
+                sender.sendMessage("你没有正在进行的任务。");
             }
         } else {
             sender.sendMessage("该命令只能由玩家执行。");
@@ -195,7 +195,7 @@ public class Commands implements TabExecutor {
     private static Vector2 getVector2(CommandSender sender, String[] args, Player player) {
         Integer indexA = Integer.parseInt(args[1]);
         Integer indexB = Integer.parseInt(args[2]);
-        Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPoints(player);
+        Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPlayer(player).getPoints();
         if (points == null) {
             sender.sendMessage("你没有设置任何点。");
             return null;
@@ -229,7 +229,7 @@ public class Commands implements TabExecutor {
             return;
         }
         Player player = (Player) sender;
-        Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPoints(player);
+        Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPlayer(player).getPoints();
         if (points != null) {
             sender.sendMessage("你创建的点：");
             for (Map.Entry<Integer, Point> entry : points.entrySet()) {
@@ -258,7 +258,7 @@ public class Commands implements TabExecutor {
                     return true;
                 }
                 Point point = new Point(x, y, z, player);
-                if (!LiteWorldEdit.instance.getCache().addPoint(player, index, point)) {
+                if (!LiteWorldEdit.instance.getCache().getPlayer(player).addPoint(index, point)) {
                     sender.sendMessage("点的数量不允许超过20，请使用已有点序号覆盖已有点。");
                     return true;
                 }

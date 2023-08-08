@@ -14,7 +14,7 @@ public class Empty {
                 for (int z = Math.min(p1.z, p2.z); z <= Math.max(p1.z, p2.z); z++) {
                     Location location = new Location(world, (double) x, (double) y, (double) z);
                     Remove remove_job = new Remove(location, player);
-                    LiteWorldEdit.instance.getCache().addJob(player, remove_job);
+                    LiteWorldEdit.instance.getCache().getPlayer(player).addJob(remove_job);
                 }
             }
         }
