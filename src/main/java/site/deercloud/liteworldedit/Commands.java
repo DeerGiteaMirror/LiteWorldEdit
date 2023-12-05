@@ -1,6 +1,5 @@
 package site.deercloud.liteworldedit;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -8,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import site.deercloud.liteworldedit.JobGenerator.Empty;
 import site.deercloud.liteworldedit.JobGenerator.Fill;
 import site.deercloud.liteworldedit.JobGenerator.OverLay;
@@ -21,8 +21,8 @@ public class Commands implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.GREEN + "LiteWorldEdit by DeerCloud");
-            sender.sendMessage(ChatColor.GREEN + "使用 /lwe help 查看帮助。");
+            Notification.info((Player) sender, "使用 /lwe help 查看帮助。");
+            Notification.info((Player) sender, "使用 /lwe help 查看帮助。");
             return true;
         }
         if (Objects.equals(args[0], "point") || Objects.equals(args[0], "p")) {
@@ -52,7 +52,7 @@ public class Commands implements TabExecutor {
             resumeJobs(sender);
             return true;
         } else {
-            sender.sendMessage("参数错误。");
+            Notification.info((Player) sender, "参数错误 使用 /lwe help 查看帮助。");
         }
         return true;
     }
@@ -62,12 +62,12 @@ public class Commands implements TabExecutor {
             Player player = (Player) sender;
             if (LiteWorldEdit.instance.getCache().getPlayer(player).hasJob()) {
                 LiteWorldEdit.instance.getCache().getPlayer(player).resumeJob();
-                sender.sendMessage("已恢复。");
+                Notification.info(player, "已恢复。");
             } else {
-                sender.sendMessage("你没有正在进行的任务。");
+                Notification.info(player, "你没有正在进行的任务。");
             }
         } else {
-            sender.sendMessage("该命令只能由玩家执行。");
+            LoggerX.info("该命令只能由玩家执行。");
         }
     }
 
@@ -76,12 +76,12 @@ public class Commands implements TabExecutor {
             Player player = (Player) sender;
             if (LiteWorldEdit.instance.getCache().getPlayer(player).hasJob()) {
                 LiteWorldEdit.instance.getCache().getPlayer(player).pauseJob();
-                sender.sendMessage("已暂停。");
+                Notification.warn(player, "已暂停。");
             } else {
-                sender.sendMessage("你没有正在进行的任务。");
+                Notification.warn(player, "你没有正在进行的任务。");
             }
         } else {
-            sender.sendMessage("该命令只能由玩家执行。");
+            LoggerX.info("该命令只能由玩家执行。");
         }
     }
 
@@ -89,14 +89,14 @@ public class Commands implements TabExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!player.isOp()) {
-                sender.sendMessage("你没有权限。");
+                Notification.error(player, "你没有权限。");
             } else {
                 LiteWorldEdit.instance.reloadConfig();
-                sender.sendMessage("已重载配置文件。");
+                Notification.info(player, "已重载配置文件。");
             }
         } else {
             LiteWorldEdit.instance.reloadConfig();
-            sender.sendMessage("已重载配置文件。");
+            LoggerX.info("已重载配置文件。");
         }
     }
 
@@ -105,18 +105,18 @@ public class Commands implements TabExecutor {
             Player player = (Player) sender;
             if (LiteWorldEdit.instance.getCache().getPlayer(player).hasJob()) {
                 LiteWorldEdit.instance.getCache().getPlayer(player).cancelJob();
-                sender.sendMessage("已取消。");
+                Notification.warn(player, "已取消。");
             } else {
-                sender.sendMessage("你没有正在进行的任务。");
+                Notification.warn(player, "你没有正在进行的任务。");
             }
         } else {
-            sender.sendMessage("该命令只能由玩家执行。");
+            LoggerX.err("该命令只能由玩家执行。");
         }
     }
 
     private static boolean emptyTask(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("该命令只能由玩家执行。");
+            LoggerX.err("该命令只能由玩家执行。");
             return true;
         }
         Player player = (Player) sender;
@@ -125,20 +125,20 @@ public class Commands implements TabExecutor {
                 Vector2 diagonalPoint = getVector2(sender, args, player);
                 if (diagonalPoint == null) return true;
                 Empty.empty(player, player.getWorld(), diagonalPoint.pointA, diagonalPoint.pointB);
-                sender.sendMessage("已添加任务。");
+                Notification.info(player, "已添加任务。");
 
             } catch (NumberFormatException e) {
-                sender.sendMessage("参数错误。");
+                Notification.error(player, "参数错误。");
             }
         } else {
-            sender.sendMessage("参数错误。");
+            Notification.error(player, "参数错误。");
         }
         return true;
     }
 
     private static boolean overlayTask(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("该命令只能由玩家执行。");
+            LoggerX.err("该命令只能由玩家执行。");
             return true;
         }
         Player player = (Player) sender;
@@ -148,25 +148,25 @@ public class Commands implements TabExecutor {
                 if (diagonalPoint == null) return true;
                 ItemStack items_in_hand = player.getInventory().getItemInMainHand();
                 if (!items_in_hand.getType().isBlock() || items_in_hand.getType() == Material.AIR) {
-                    sender.sendMessage("你手上没有方块。");
+                    Notification.error(player, "你手上没有方块。");
                     return true;
                 }
                 Material material = Material.getMaterial(items_in_hand.getType().name());
                 OverLay.overLay(player, player.getWorld(), diagonalPoint.pointA, diagonalPoint.pointB, material);
-                sender.sendMessage("已添加任务。");
+                Notification.info(player, "已添加任务。");
                 return true;
             } catch (NumberFormatException e) {
-                sender.sendMessage("参数错误。");
+                Notification.error(player, "参数错误。");
             }
         } else {
-            sender.sendMessage("参数错误。");
+            Notification.error(player, "参数错误。");
         }
         return true;
     }
 
     private static boolean fillTask(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("该命令只能由玩家执行。");
+            LoggerX.err("该命令只能由玩家执行。");
             return true;
         }
         Player player = (Player) sender;
@@ -176,18 +176,18 @@ public class Commands implements TabExecutor {
                 if (diagonalPoint == null) return true;
                 ItemStack items_in_hand = player.getInventory().getItemInMainHand();
                 if (!items_in_hand.getType().isBlock() || items_in_hand.getType() == Material.AIR) {
-                    sender.sendMessage("你手上没有方块。");
+                    Notification.error(player, "你手上没有方块。");
                     return true;
                 }
                 Material material = Material.getMaterial(items_in_hand.getType().name());
                 Fill.fill(player, player.getWorld(), diagonalPoint.pointA, diagonalPoint.pointB, material);
-                sender.sendMessage("已添加任务。");
+                Notification.info(player, "已添加任务。");
                 return true;
             } catch (NumberFormatException e) {
-                sender.sendMessage("参数错误。");
+                Notification.error(player, "参数错误。");
             }
         } else {
-            sender.sendMessage("参数错误。");
+            Notification.error(player, "参数错误。");
         }
         return true;
     }
@@ -197,17 +197,17 @@ public class Commands implements TabExecutor {
         Integer indexB = Integer.parseInt(args[2]);
         Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPlayer(player).getPoints();
         if (points == null) {
-            sender.sendMessage("你没有设置任何点。");
+            Notification.error(player, "你没有设置任何点。");
             return null;
         }
         Point pointA = points.get(indexA);
         Point pointB = points.get(indexB);
         if (pointA == null || pointB == null) {
-            sender.sendMessage("点不存在。");
+            Notification.error(player, "点不存在。");
             return null;
         }
         if (out_of_region(pointA, pointB)) {
-            sender.sendMessage("选择的区域不可以超过 " + LiteWorldEdit.instance.getConfigMgr().getXMax() + "x" + LiteWorldEdit.instance.getConfigMgr().getYMax() + "x" + LiteWorldEdit.instance.getConfigMgr().getZMax() + "。");
+            Notification.error(player, "选择的区域不可以超过 " + LiteWorldEdit.instance.getConfigMgr().getXMax() + "x" + LiteWorldEdit.instance.getConfigMgr().getYMax() + "x" + LiteWorldEdit.instance.getConfigMgr().getZMax() + "。");
             return null;
         }
         return new Vector2(pointA, pointB);
@@ -225,25 +225,25 @@ public class Commands implements TabExecutor {
 
     private static void listPoints(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("该命令只能由玩家执行。");
+            LoggerX.err("该命令只能由玩家执行。");
             return;
         }
         Player player = (Player) sender;
         Map<Integer, Point> points = LiteWorldEdit.instance.getCache().getPlayer(player).getPoints();
         if (points != null) {
-            sender.sendMessage("你创建的点：");
+            Notification.info(player, "你创建的点：");
             for (Map.Entry<Integer, Point> entry : points.entrySet()) {
                 Point point = entry.getValue();
-                sender.sendMessage(entry.getKey() + ": " + point.x + ", " + point.y + ", " + point.z);
+                Notification.info(player, entry.getKey() + ": " + point.x + ", " + point.y + ", " + point.z);
             }
         } else {
-            sender.sendMessage("你没有设置任何点。");
+            Notification.warn(player, "你没有设置任何点。");
         }
     }
 
     private static boolean addPoint(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("该命令只能由玩家执行。");
+            LoggerX.err("该命令只能由玩家执行。");
             return true;
         }
         Player player = (Player) sender;
@@ -259,21 +259,21 @@ public class Commands implements TabExecutor {
                 }
                 Point point = new Point(x, y, z, player);
                 if (!LiteWorldEdit.instance.getCache().getPlayer(player).addPoint(index, point)) {
-                    sender.sendMessage("点的数量不允许超过20，请使用已有点序号覆盖已有点。");
+                    Notification.error(player, "点的数量不允许超过20，请使用已有点序号覆盖已有点。");
                     return true;
                 }
-                sender.sendMessage("点 " + index + " 已设置为 " + x + ", " + y + ", " + z + "。");
+                Notification.info(player, "点 " + index + " 已设置为 " + x + ", " + y + ", " + z + "。");
             } catch (NumberFormatException e) {
-                sender.sendMessage("参数错误。");
+                Notification.error(player, "参数错误。");
             }
         } else {
-            sender.sendMessage("参数错误。");
+            Notification.error(player, "参数错误。");
         }
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
             return Arrays.asList("point", "p", "points", "fill", "empty", "overlay", "cancel", "pause", "resume", "help", "reload");
         } else if (args.length == 2) {
@@ -287,16 +287,20 @@ public class Commands implements TabExecutor {
     }
 
     public void print_help(CommandSender sender) {
-        sender.sendMessage(ChatColor.GREEN + "LiteWorldEdit 帮助");
-        sender.sendMessage(ChatColor.GREEN + "/lwe help - 查看帮助");
-        sender.sendMessage(ChatColor.GREEN + "/lwe point|p [点序号(整数)] [x] [y] [z] - 创建点");
-        sender.sendMessage(ChatColor.GREEN + "/lwe points - 查看所有点");
-        sender.sendMessage(ChatColor.GREEN + "/lwe fill [点序号A] [点序号B] - (在AB点对角线间放置方块 - 需要手持被放置的方块)");
-        sender.sendMessage(ChatColor.GREEN + "/lwe empty [点序号A] [点序号B] - (破坏AB点对角线间方块 - 需要拥有下届合金镐)");
-        sender.sendMessage(ChatColor.GREEN + "/lwe overlay [点序号A] [点序号B] - (在选区地面上铺一层方块 - 需要手持被放置的方块)");
-        sender.sendMessage(ChatColor.GREEN + "/lwe cancel - 取消所有任务");
-        sender.sendMessage(ChatColor.GREEN + "/lwe pause - 暂停工作");
-        sender.sendMessage(ChatColor.GREEN + "/lwe resume - 恢复工作");
+        if (!(sender instanceof Player)) {
+            LoggerX.err("该命令只能由玩家执行。");
+            return;
+        }
+        Notification.info((Player) sender, "LiteWorldEdit 帮助");
+        Notification.info((Player) sender, "/lwe help - 查看帮助");
+        Notification.info((Player) sender, "/lwe point|p [点序号(整数)] [x] [y] [z] - 创建点");
+        Notification.info((Player) sender, "/lwe points - 查看所有点");
+        Notification.info((Player) sender, "/lwe fill [点序号A] [点序号B] - (在AB点对角线间放置方块 - 需要手持被放置的方块)");
+        Notification.info((Player) sender, "/lwe empty [点序号A] [点序号B] - (破坏AB点对角线间方块 - 需要拥有下届合金镐)");
+        Notification.info((Player) sender, "/lwe overlay [点序号A] [点序号B] - (在AB点对角线间放置方块 - 不需要手持被放置的方块)");
+        Notification.info((Player) sender, "/lwe cancel - 取消当前任务");
+        Notification.info((Player) sender, "/lwe pause - 暂停当前任务");
+        Notification.info((Player) sender, "/lwe resume - 恢复当前任务");
     }
 
     static public boolean out_of_region(Point A, Point B) {
