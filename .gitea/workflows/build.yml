@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - '**/*src/**/*.java'
+      # pom.xml 文件有变动执行编译
+      - '**/pom.xml'
 
 jobs:
   build:
@@ -13,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: stCarolas/setup-maven@v4
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
