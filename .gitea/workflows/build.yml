@@ -13,7 +13,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: https://ssl.lunadeer.cn:14446/actions/checkout@v3
+    - name: "Pull & Checkout"
+      uses: https://ssl.lunadeer.cn:14446/actions/checkout@v3
       with:
         fetch-depth: 0
     - name: "Set up Maven"
@@ -22,7 +23,7 @@ jobs:
       uses: https://ssl.lunadeer.cn:14446/actions/setup-java@v3
       with:
         java-version: '17'
-        distribution: 'temurin'
+        distribution: 'zulu'
         cache: maven
     - name: "Build with Maven"
       run: mvn -B package --file pom.xml
