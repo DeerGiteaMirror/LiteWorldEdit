@@ -24,13 +24,18 @@ jobs:
         cache: maven
     - name: "Build with Maven"
       run: mvn -B package --file pom.xml
-    - run: mkdir staging && cp target/*.jar staging
+    - name: "Copy jar to staging"
+      run: mkdir staging && cp target/*.jar staging
     - name: "Set Release version env variable"
       run: |
         echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
     - name: "Build & test"
       run: |
         echo "done!"
+    - name: "setup go for release script"
+      uses: https://github.com/actions/setup-go@v4
+      with:
+        go-version: '>=1.20.1'
     - name: "Release"
       uses: https://gitea.com/actions/release-action@main
       with:
