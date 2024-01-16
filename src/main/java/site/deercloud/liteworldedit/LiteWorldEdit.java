@@ -20,7 +20,16 @@ public final class LiteWorldEdit extends JavaPlugin {
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setExecutor(new Commands());
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setTabCompleter(new Commands());
 
-        LoggerX.info("插件启动成功。");
+        String logo = "LiteWorldEdit 已加载 版本: " + getPluginMeta().getVersion() + "\n";
+        // https://patorjk.com/software/taag/#p=display&f=Big&t=LiteWorldEdit
+        logo += " _      _ _    __          __        _     _ ______    _ _ _   \n";
+        logo += "| |    (_) |   \\ \\        / /       | |   | |  ____|  | (_) |  \n";
+        logo += "| |     _| |_ __\\ \\  /\\  / /__  _ __| | __| | |__   __| |_| |_ \n";
+        logo += "| |    | | __/ _ \\\\/  \\/ / _ \\| '__| |/ _` |  __| / _` | | __|\n";
+        logo += "| |____| | ||  __/\\  /\\  / (_) | |  | | (_| | |___| (_| | | |_ \n";
+        logo += "|______|_|\\__\\___| \\/  \\/ \\___/|_|  |_|\\__,_|______\\__,_|_|\\__|\n";
+        logo += "\n";
+        LoggerX.info(logo);
     }
 
     @Override
