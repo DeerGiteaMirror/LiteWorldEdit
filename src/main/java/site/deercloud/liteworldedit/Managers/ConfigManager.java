@@ -16,6 +16,7 @@ public class ConfigManager {
         _x_max = _file.getInt("MaxX", 64);
         _y_max = _file.getInt("MaxY", 64);
         _z_max = _file.getInt("MaxZ", 64);
+        _drop_items = _file.getBoolean("DropItems", false);
     }
 
     public Boolean isDebug() {
@@ -40,6 +41,16 @@ public class ConfigManager {
         return _z_max;
     }
 
+    public Boolean isDropItems() {
+        return _drop_items;
+    }
+
+    public void setDropItems(Boolean drop_items) {
+        _drop_items = drop_items;
+        _file.set("DropItems", drop_items);
+        _plugin.saveConfig();
+    }
+
     public void setMaxSize(Integer x, Integer y, Integer z) {
         _x_max = x;
         _y_max = y;
@@ -47,6 +58,7 @@ public class ConfigManager {
         _file.set("MaxX", x);
         _file.set("MaxY", y);
         _file.set("MaxZ", z);
+        _drop_items = _file.getBoolean("DropItems", false);
         _plugin.saveConfig();
     }
 
@@ -59,4 +71,6 @@ public class ConfigManager {
     private Integer _x_max;
     private Integer _y_max;
     private Integer _z_max;
+
+    private Boolean _drop_items;
 }

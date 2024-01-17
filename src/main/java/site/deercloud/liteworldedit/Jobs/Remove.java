@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import site.deercloud.liteworldedit.LiteWorldEdit;
 import site.deercloud.liteworldedit.LoggerX;
 
 import java.util.HashMap;
@@ -76,6 +77,9 @@ public class Remove extends Job {
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             raw_block.setType(Material.AIR);
+            if (LiteWorldEdit.instance.getConfigMgr().isDropItems()) {
+                raw_block.getWorld().dropItemNaturally(raw_block.getLocation(), new ItemStack(raw_block.getType()));
+            }
             // 获取耐久附魔
             int durability = pickaxe.getEnchantmentLevel(Enchantment.DURABILITY);
             double random = Math.random();
