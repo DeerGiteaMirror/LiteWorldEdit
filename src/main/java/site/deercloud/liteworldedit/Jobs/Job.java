@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import site.deercloud.liteworldedit.Notification;
 
 public class Job {
     protected World _world;
@@ -27,11 +28,11 @@ public class Job {
     }
 
     static public Boolean in_range(Player player, Location location) {
-        if (player.getWorld() != location.getWorld()) {
+        if (!player.getWorld().getName().equals(location.getWorld().getName())) {
             return false;
         }
         if (player.getLocation().distance(location) > 128) {
-            player.sendMessage(ChatColor.RED + "不允许超过128格操作！");
+            Notification.error(player, "不允许超过128格操作！");
             return false;
         }
         return true;
