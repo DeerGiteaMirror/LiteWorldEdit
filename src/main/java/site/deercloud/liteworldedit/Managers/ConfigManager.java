@@ -16,7 +16,9 @@ public class ConfigManager {
         _x_max = _file.getInt("MaxX", 64);
         _y_max = _file.getInt("MaxY", 64);
         _z_max = _file.getInt("MaxZ", 64);
+        _multiplier = _file.getInt("Multiplier", 1);
         _drop_items = _file.getBoolean("DropItems", false);
+        _plugin.saveConfig();
     }
 
     public Boolean isDebug() {
@@ -43,6 +45,10 @@ public class ConfigManager {
 
     public Boolean isDropItems() {
         return _drop_items;
+    }
+
+    public Integer getMultiplier() {
+        return _multiplier;
     }
 
     public void setDropItems(Boolean drop_items) {
@@ -73,4 +79,6 @@ public class ConfigManager {
     private Integer _z_max;
 
     private Boolean _drop_items;
+
+    private Integer _multiplier;
 }

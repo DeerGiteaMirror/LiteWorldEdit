@@ -1,10 +1,11 @@
 package site.deercloud.liteworldedit;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import site.deercloud.liteworldedit.Jobs.Job;
 import site.deercloud.liteworldedit.Jobs.JobErrCode;
 
-public class Task implements Runnable{
+public class Task implements Runnable {
     /**
      * When an object implementing interface {@code Runnable} is used
      * to create a thread, starting the thread causes the object's
@@ -25,29 +26,31 @@ public class Task implements Runnable{
 
     @Override
     public void run() {
-        Job job = this.xPlayer.popJob();
-        if (job == null) {
-            return;
-        }
-        // 如果任务不可执行 允许在一个tick内多次执行直到任务可执行
-        int max_retries = 100;
-        JobErrCode re;
-        while ((re = job.Do()) != JobErrCode.OK) {
-            max_retries--;
-            if (max_retries <= 0) {
-                break;
+        for (int i = 0; i < LiteWorldEdit.config.getMultiplier(); i++) {
+            Job job = this.xPlayer.popJob();
+            if (job == null) {
+                return;
             }
-            if (re.canContinue()) {
-                job.get_creator().sendTitle("§e警告", "§e" + re.getMessage(), 10, 70, 20);
-                job = this.xPlayer.popJob();
-                if (job == null) {
+            // 如果任务不可执行 允许在一个tick内多次执行直到任务可执行
+            int max_retries = 100;
+            JobErrCode re;
+            while ((re = job.Do()) != JobErrCode.OK) {
+                max_retries--;
+                if (max_retries <= 0) {
+                    break;
+                }
+                Player player = job.get_creator();
+                if (re.canContinue()) {
+                    Notification.titleWarn(player, "警告", re.getMessage());
+                    job = this.xPlayer.popJob();
+                    if (job == null) {
+                        return;
+                    }
+                } else {
+                    Notification.titleError(player, "错误 任务已自动暂停", re.getMessage());
+                    this.xPlayer.pauseJob();
                     return;
                 }
-            } else {
-                Player player = job.get_creator();
-                player.sendTitle("§c错误 任务已自动暂停", "§c" + re.getMessage(), 10, 70, 20);
-                this.xPlayer.pauseJob();
-                return;
             }
         }
     }

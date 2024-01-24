@@ -4,6 +4,8 @@ MaxY: 64
 
 MaxZ: 64
 
+Multiplier: 1
+
 DropItems: false
 
 Debug: false

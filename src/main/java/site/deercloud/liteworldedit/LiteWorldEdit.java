@@ -13,23 +13,25 @@ public final class LiteWorldEdit extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         instance = this;
-        _config = new ConfigManager();
+        config = new ConfigManager();
         _cache = new Cache();
 
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setExecutor(new Commands());
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setTabCompleter(new Commands());
 
-        String logo = "LiteWorldEdit 已加载 版本: " + getPluginMeta().getVersion() + "\n";
+        LoggerX.info("LiteWorldEdit 已加载");
+        LoggerX.info("版本: " + getPluginMeta().getVersion());
+        LoggerX.info("");
         // https://patorjk.com/software/taag/#p=display&f=Big&t=LiteWorldEdit
-        logo += " _      _ _    __          __        _     _ ______    _ _ _   \n";
-        logo += "| |    (_) |   \\ \\        / /       | |   | |  ____|  | (_) |  \n";
-        logo += "| |     _| |_ __\\ \\  /\\  / /__  _ __| | __| | |__   __| |_| |_ \n";
-        logo += "| |    | | __/ _ \\\\/  \\/ / _ \\| '__| |/ _` |  __| / _` | | __|\n";
-        logo += "| |____| | ||  __/\\  /\\  / (_) | |  | | (_| | |___| (_| | | |_ \n";
-        logo += "|______|_|\\__\\___| \\/  \\/ \\___/|_|  |_|\\__,_|______\\__,_|_|\\__|\n";
-        logo += "\n";
-        LoggerX.info(logo);
+        LoggerX.info(" _      _ _    __          __        _     _ ______    _ _ _   ");
+        LoggerX.info("| |    (_) |   \\ \\        / /       | |   | |  ____|  | (_) |  ");
+        LoggerX.info("| |     _| |_ __\\ \\  /\\  / /__  _ __| | __| | |__   __| |_| |_ ");
+        LoggerX.info("| |    | | __/ _ \\\\/  \\/ / _ \\| '__| |/ _` |  __| / _` | | __|");
+        LoggerX.info("| |____| | ||  __/\\  /\\  / (_) | |  | | (_| | |___| (_| | | |_ ");
+        LoggerX.info("|______|_|\\__\\___| \\/  \\/ \\___/|_|  |_|\\__,_|______\\__,_|_|\\__|");
+        LoggerX.info("");
+
     }
 
     @Override
@@ -38,7 +40,7 @@ public final class LiteWorldEdit extends JavaPlugin {
     }
 
     public ConfigManager getConfigMgr() {
-        return _config;
+        return config;
     }
 
     public Cache getCache() {
@@ -46,6 +48,6 @@ public final class LiteWorldEdit extends JavaPlugin {
     }
 
     public static LiteWorldEdit instance;
-    private ConfigManager _config;
+    public static ConfigManager config;
     private Cache _cache;
 }
