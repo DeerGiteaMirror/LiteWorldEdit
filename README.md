@@ -1,5 +1,9 @@
 # LiteWorldEdit
 
+开源地址：[Gitea](https://ssl.lunadeer.cn:14446/zhangyuheng/LiteWorldEdit)
+
+文档地址：[Doc](https://ssl.lunadeer.cn:14448/doc/3/)
+
 ## 轻量创世神
 
 适用于生存服务器的轻量级创世神插件。
