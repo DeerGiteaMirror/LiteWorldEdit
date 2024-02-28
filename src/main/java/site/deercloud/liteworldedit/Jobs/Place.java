@@ -18,16 +18,16 @@ public class Place extends Job {
 
 
     public Place(Location location, Player player, Material material) {
-        _world = player.getWorld();
-        _location = location;
-        _creator = player;
-        _time = System.currentTimeMillis();
+        super(player.getWorld(), location, player);
         _block = material;
-        _inventory = player.getInventory();
     }
 
     @Override
     public JobErrCode Do() {
+        Player _creator = this.get_creator();
+        Location _location = this.get_location();
+        World _world = this.get_world();
+        Inventory _inventory = this.get_inventory();
         // 超出距离
         if (!in_range(_creator, _location)) {
             LoggerX.debug("超出距离！");
@@ -80,6 +80,7 @@ public class Place extends Job {
     }
 
     private boolean moveBlockFromShulkerBoxToInv() {
+        Inventory _inventory = this.get_inventory();
         HashMap<Integer, ?> shulkerBoxes = _inventory.all(Material.SHULKER_BOX);
         for (Integer index : shulkerBoxes.keySet()) {
             LoggerX.debug("找到潜影盒：" + index);
@@ -102,8 +103,12 @@ public class Place extends Job {
             if (item_idx == -1) {
                 continue;
             }
+            ItemStack i = boxInv.getItem(item_idx);
+            if (i == null) {
+                continue;
+            }
             // 把物品放到玩家物品栏
-            _inventory.addItem(boxInv.getItem(item_idx));
+            _inventory.addItem(i);
             // 把潜影盒中的物品移除
             shulkerBox.getInventory().setItem(item_idx, null);
             // 更新潜影盒
