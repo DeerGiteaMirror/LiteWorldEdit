@@ -48,6 +48,7 @@ public class Task implements Runnable {
                     }
                 } else {
                     Notification.titleError(player, "错误 任务已自动暂停", re.getMessage());
+                    this.xPlayer.addJob(job);   // 任务暂停 将没有执行的任务重新加入队列
                     this.xPlayer.pauseJob();
                     return;
                 }
