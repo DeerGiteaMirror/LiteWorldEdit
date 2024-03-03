@@ -35,8 +35,8 @@ public class Place extends Job {
         }
         // 跳过非空气方块
         Block raw_block = _world.getBlockAt(_location);
-        if (!raw_block.isEmpty()) {
-            LoggerX.debug("目标方块不是空气！");
+        if (!raw_block.isEmpty() && !raw_block.isLiquid()) {
+            LoggerX.debug("目标方块不是空气或流体！");
             return JobErrCode.NOT_AIR_BLOCK;
         }
         // 获取到玩家物品中材料的第一个堆叠

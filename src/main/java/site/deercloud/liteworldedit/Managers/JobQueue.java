@@ -20,6 +20,10 @@ public class JobQueue {
     int total = 0;
 
     int ms_last_pop;
+    int time_remain_count = 0;
+
+    int time_s_remaining = 0;
+    int time_m_remaining = 0;
 
     Player player;
 
@@ -44,7 +48,6 @@ public class JobQueue {
         }
         Job job = queue.pop();
         updateBarProgressBar();
-        ms_last_pop = (int) System.currentTimeMillis();
         return job;
     }
 
@@ -76,11 +79,16 @@ public class JobQueue {
 
     private void updateBarProgressBar() {
         bar.setProgress((total - queue.size()) * 1.0 / total);
-        int delta_time_ms = (int) System.currentTimeMillis() - ms_last_pop;
-        int time_s_remaining = queue.size() * delta_time_ms / 1000;
-        int time_m_remaining = time_s_remaining / 60;
-        int time_s_remaining_mod = time_s_remaining % 60;
-        bar.setTitle("§a§lLiteWorldEdit [正在运行] 剩余任务: " + queue.size() + " 预计剩余时间: " + time_m_remaining + "分" + time_s_remaining_mod + "秒");
+        time_remain_count++;
+        if (time_remain_count >= 100) {
+            time_remain_count = 0;
+            int delta_time_ms = (int) System.currentTimeMillis() - ms_last_pop;
+            time_s_remaining = queue.size() * delta_time_ms / 100 / 1000;
+            time_m_remaining = time_s_remaining / 60;
+            time_s_remaining = time_s_remaining % 60;
+            ms_last_pop = (int) System.currentTimeMillis();
+        }
+        bar.setTitle("§a§lLiteWorldEdit [正在运行] 剩余任务: " + queue.size() + " 预计剩余时间: " + time_m_remaining + "分" + time_s_remaining + "秒");
         bar.setVisible(queue.size() != 0);
     }
 
