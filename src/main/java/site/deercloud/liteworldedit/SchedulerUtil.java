@@ -3,7 +3,6 @@ package site.deercloud.liteworldedit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 
 public class SchedulerUtil {
 

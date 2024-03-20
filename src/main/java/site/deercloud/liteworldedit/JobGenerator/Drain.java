@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import site.deercloud.liteworldedit.Jobs.Absorb;
-import site.deercloud.liteworldedit.Jobs.Remove;
 import site.deercloud.liteworldedit.LiteWorldEdit;
 import site.deercloud.liteworldedit.Managers.Point;
 

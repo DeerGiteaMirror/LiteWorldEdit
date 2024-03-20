@@ -1,9 +1,8 @@
 package site.deercloud.liteworldedit.JobGenerator;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import site.deercloud.liteworldedit.Jobs.Place;
 import site.deercloud.liteworldedit.LiteWorldEdit;

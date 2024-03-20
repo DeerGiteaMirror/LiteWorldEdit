@@ -7,7 +7,7 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static site.deercloud.liteworldedit.LoggerX.*;
+import static site.deercloud.liteworldedit.LoggerX.debug;
 
 public class Notification {
     private static final Style i_style = Style.style(TextColor.color(139, 255, 123));

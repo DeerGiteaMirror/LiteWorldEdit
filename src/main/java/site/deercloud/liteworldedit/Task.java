@@ -1,6 +1,5 @@
 package site.deercloud.liteworldedit;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import site.deercloud.liteworldedit.Jobs.Job;
 import site.deercloud.liteworldedit.Jobs.JobErrCode;

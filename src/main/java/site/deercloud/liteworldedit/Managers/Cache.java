@@ -1,7 +1,6 @@
 package site.deercloud.liteworldedit.Managers;
 
 import org.bukkit.entity.Player;
-import site.deercloud.liteworldedit.Jobs.Job;
 import site.deercloud.liteworldedit.XPlayer;
 
 import java.util.HashMap;
