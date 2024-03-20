@@ -84,7 +84,43 @@ public class Place extends Job {
 
     private boolean moveBlockFromShulkerBoxToInv() {
         Inventory _inventory = this.get_inventory();
-        HashMap<Integer, ?> shulkerBoxes = _inventory.all(Material.SHULKER_BOX);
+        HashMap<Integer, ItemStack> shulkerBoxes = new HashMap<>();
+        HashMap<Integer, ? extends ItemStack> plainShulkerBoxes = _inventory.all(Material.SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> whiteShulkerBoxes = _inventory.all(Material.WHITE_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> orangeShulkerBoxes = _inventory.all(Material.ORANGE_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> magentaShulkerBoxes = _inventory.all(Material.MAGENTA_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> lightBlueShulkerBoxes = _inventory.all(Material.LIGHT_BLUE_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> yellowShulkerBoxes = _inventory.all(Material.YELLOW_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> limeShulkerBoxes = _inventory.all(Material.LIME_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> pinkShulkerBoxes = _inventory.all(Material.PINK_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> grayShulkerBoxes = _inventory.all(Material.GRAY_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> lightGrayShulkerBoxes = _inventory.all(Material.LIGHT_GRAY_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> cyanShulkerBoxes = _inventory.all(Material.CYAN_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> purpleShulkerBoxes = _inventory.all(Material.PURPLE_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> blueShulkerBoxes = _inventory.all(Material.BLUE_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> brownShulkerBoxes = _inventory.all(Material.BROWN_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> greenShulkerBoxes = _inventory.all(Material.GREEN_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> redShulkerBoxes = _inventory.all(Material.RED_SHULKER_BOX);
+        HashMap<Integer, ? extends ItemStack> blackShulkerBoxes = _inventory.all(Material.BLACK_SHULKER_BOX);
+
+        shulkerBoxes.putAll(plainShulkerBoxes);
+        shulkerBoxes.putAll(whiteShulkerBoxes);
+        shulkerBoxes.putAll(orangeShulkerBoxes);
+        shulkerBoxes.putAll(magentaShulkerBoxes);
+        shulkerBoxes.putAll(lightBlueShulkerBoxes);
+        shulkerBoxes.putAll(yellowShulkerBoxes);
+        shulkerBoxes.putAll(limeShulkerBoxes);
+        shulkerBoxes.putAll(pinkShulkerBoxes);
+        shulkerBoxes.putAll(grayShulkerBoxes);
+        shulkerBoxes.putAll(lightGrayShulkerBoxes);
+        shulkerBoxes.putAll(cyanShulkerBoxes);
+        shulkerBoxes.putAll(purpleShulkerBoxes);
+        shulkerBoxes.putAll(blueShulkerBoxes);
+        shulkerBoxes.putAll(brownShulkerBoxes);
+        shulkerBoxes.putAll(greenShulkerBoxes);
+        shulkerBoxes.putAll(redShulkerBoxes);
+        shulkerBoxes.putAll(blackShulkerBoxes);
+
         for (Integer index : shulkerBoxes.keySet()) {
             LoggerX.debug("找到潜影盒：" + index);
             ItemStack itemStack = _inventory.getItem(index);
