@@ -127,3 +127,9 @@ Debug: false
 - [X] 可手动暂停、恢复任务
 
 - [ ] 更多的任务类型支持（如画圆、弧线）
+
+## 建议与反馈
+
+Mail: [zhangyuheng@lunadeer.cn](mailto:zhangyuheng@lunadeer.cn)
+
+QQ: 2751268851
