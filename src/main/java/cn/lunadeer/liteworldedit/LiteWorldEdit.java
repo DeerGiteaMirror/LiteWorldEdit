@@ -20,9 +20,7 @@ public final class LiteWorldEdit extends JavaPlugin {
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setExecutor(new Commands());
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setTabCompleter(new Commands());
 
-        if (config.enableBStats()) {
-            metrics = new Metrics(this, 21436);
-        }
+        Metrics metrics = new Metrics(this, 21436);
 
         LoggerX.info("LiteWorldEdit 已加载");
         LoggerX.info("版本: " + getPluginMeta().getVersion());
@@ -54,5 +52,4 @@ public final class LiteWorldEdit extends JavaPlugin {
     public static LiteWorldEdit instance;
     public static ConfigManager config;
     private Cache _cache;
-    private Metrics metrics;
 }
