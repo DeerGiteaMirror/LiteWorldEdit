@@ -1,4 +1,4 @@
-package site.deercloud.liteworldedit;
+package cn.lunadeer.liteworldedit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;

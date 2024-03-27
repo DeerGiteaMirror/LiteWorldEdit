@@ -1,14 +1,14 @@
-package site.deercloud.liteworldedit;
+package cn.lunadeer.liteworldedit;
 
+import cn.lunadeer.liteworldedit.Jobs.Job;
+import cn.lunadeer.liteworldedit.Managers.JobQueue;
+import cn.lunadeer.liteworldedit.Managers.Point;
 import org.bukkit.entity.Player;
-import site.deercloud.liteworldedit.Jobs.Job;
-import site.deercloud.liteworldedit.Managers.JobQueue;
-import site.deercloud.liteworldedit.Managers.Point;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static site.deercloud.liteworldedit.SchedulerUtil.runAtFixedRateEntity;
+import static cn.lunadeer.liteworldedit.SchedulerUtil.runAtFixedRateEntity;
 
 public class XPlayer {
 

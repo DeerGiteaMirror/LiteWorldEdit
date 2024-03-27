@@ -1,5 +1,6 @@
-package site.deercloud.liteworldedit;
+package cn.lunadeer.liteworldedit;
 
+import cn.lunadeer.liteworldedit.Managers.Point;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -11,7 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import site.deercloud.liteworldedit.Managers.Point;
 
 public class Events implements Listener {
     @EventHandler

@@ -1,7 +1,7 @@
-package site.deercloud.liteworldedit.Managers;
+package cn.lunadeer.liteworldedit.Managers;
 
+import cn.lunadeer.liteworldedit.XPlayer;
 import org.bukkit.entity.Player;
-import site.deercloud.liteworldedit.XPlayer;
 
 import java.util.HashMap;
 import java.util.Map;

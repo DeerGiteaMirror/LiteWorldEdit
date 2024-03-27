@@ -1,12 +1,12 @@
 name: LiteWorldEdit
 version: '${project.version}'
-main: site.deercloud.liteworldedit.LiteWorldEdit
+main: cn.lunadeer.liteworldedit.LiteWorldEdit
 api-version: 1.14
 prefix: LWE
 load: STARTUP
 authors: [ Luming ]
 description: 生存用简易创世神。
-website: https://blog.deercloud.site
+website: https://ssl.lunadeer.cn:14448/project-2/
 folia-supported: true
 commands:
   LiteWorldEdit:

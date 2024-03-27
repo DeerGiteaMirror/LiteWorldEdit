@@ -1,4 +1,4 @@
-package site.deercloud.liteworldedit;
+package cn.lunadeer.liteworldedit;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
@@ -6,8 +6,6 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import static site.deercloud.liteworldedit.LoggerX.debug;
 
 public class Notification {
     private static final Style i_style = Style.style(TextColor.color(139, 255, 123));
@@ -43,19 +41,19 @@ public class Notification {
     public static void info(Player player, Component msg) {
         player.sendMessage(Component.text(prefix, i_style).append(msg));
         if (LiteWorldEdit.config.isDebug())
-            debug("来自玩家[ " + player.getName() + " ] 的提示 | " + msg);
+            LoggerX.debug("来自玩家[ " + player.getName() + " ] 的提示 | " + msg);
     }
 
     public static void warn(Player player, Component msg) {
         player.sendMessage(Component.text(prefix, w_style).append(msg));
         if (LiteWorldEdit.config.isDebug())
-            debug("来自玩家[ " + player.getName() + " ] 的警告 | " + msg);
+            LoggerX.debug("来自玩家[ " + player.getName() + " ] 的警告 | " + msg);
     }
 
     public static void error(Player player, Component msg) {
         player.sendMessage(Component.text(prefix, e_style).append(msg));
         if (LiteWorldEdit.config.isDebug())
-            debug("来自玩家[ " + player.getName() + " ] 的报错 | " + msg);
+            LoggerX.debug("来自玩家[ " + player.getName() + " ] 的报错 | " + msg);
     }
 
     public static void info(CommandSender player, Component msg) {

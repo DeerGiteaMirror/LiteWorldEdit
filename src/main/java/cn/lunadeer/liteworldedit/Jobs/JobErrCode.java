@@ -1,4 +1,4 @@
-package site.deercloud.liteworldedit.Jobs;
+package cn.lunadeer.liteworldedit.Jobs;
 
 public enum JobErrCode {
     OK(0, ""), // 无错误

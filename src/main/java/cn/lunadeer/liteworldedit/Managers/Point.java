@@ -1,4 +1,4 @@
-package site.deercloud.liteworldedit.Managers;
+package cn.lunadeer.liteworldedit.Managers;
 
 import org.bukkit.entity.Player;
 

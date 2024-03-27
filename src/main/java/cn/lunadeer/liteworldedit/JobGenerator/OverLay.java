@@ -1,13 +1,13 @@
-package site.deercloud.liteworldedit.JobGenerator;
+package cn.lunadeer.liteworldedit.JobGenerator;
 
+import cn.lunadeer.liteworldedit.Jobs.Place;
+import cn.lunadeer.liteworldedit.LiteWorldEdit;
+import cn.lunadeer.liteworldedit.Managers.Point;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import site.deercloud.liteworldedit.Jobs.Place;
-import site.deercloud.liteworldedit.LiteWorldEdit;
-import site.deercloud.liteworldedit.Managers.Point;
 
 public class OverLay {
 

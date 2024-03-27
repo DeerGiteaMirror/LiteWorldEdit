@@ -1,9 +1,9 @@
-package site.deercloud.liteworldedit;
+package cn.lunadeer.liteworldedit;
 
+import cn.lunadeer.liteworldedit.Managers.Cache;
+import cn.lunadeer.liteworldedit.Managers.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import site.deercloud.liteworldedit.Managers.Cache;
-import site.deercloud.liteworldedit.Managers.ConfigManager;
 
 import java.util.Objects;
 
@@ -19,6 +19,10 @@ public final class LiteWorldEdit extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setExecutor(new Commands());
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setTabCompleter(new Commands());
+
+        if (config.enableBStats()) {
+            metrics = new Metrics(this, 21436);
+        }
 
         LoggerX.info("LiteWorldEdit 已加载");
         LoggerX.info("版本: " + getPluginMeta().getVersion());
@@ -50,4 +54,5 @@ public final class LiteWorldEdit extends JavaPlugin {
     public static LiteWorldEdit instance;
     public static ConfigManager config;
     private Cache _cache;
+    private Metrics metrics;
 }

@@ -1,7 +1,7 @@
-package site.deercloud.liteworldedit.Managers;
+package cn.lunadeer.liteworldedit.Managers;
 
+import cn.lunadeer.liteworldedit.LiteWorldEdit;
 import org.bukkit.configuration.file.FileConfiguration;
-import site.deercloud.liteworldedit.LiteWorldEdit;
 
 public class ConfigManager {
     public ConfigManager() {
@@ -18,6 +18,7 @@ public class ConfigManager {
         _z_max = _file.getInt("MaxZ", 64);
         _multiplier = _file.getInt("Multiplier", 1);
         _drop_items = _file.getBoolean("DropItems", false);
+        _b_stats = _file.getBoolean("bStats", true);
         _plugin.saveConfig();
     }
 
@@ -68,6 +69,16 @@ public class ConfigManager {
         _plugin.saveConfig();
     }
 
+    public Boolean enableBStats() {
+        return _b_stats;
+    }
+
+    public void setBStats(Boolean b_stats) {
+        _b_stats = b_stats;
+        _file.set("bStats", b_stats);
+        _plugin.saveConfig();
+    }
+
 
     private final LiteWorldEdit _plugin = LiteWorldEdit.instance;
     private FileConfiguration _file;
@@ -81,4 +92,5 @@ public class ConfigManager {
     private Boolean _drop_items;
 
     private Integer _multiplier;
+    private Boolean _b_stats;
 }

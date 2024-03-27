@@ -1,5 +1,6 @@
-package site.deercloud.liteworldedit.Jobs;
+package cn.lunadeer.liteworldedit.Jobs;
 
+import cn.lunadeer.liteworldedit.LoggerX;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,7 +13,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
-import site.deercloud.liteworldedit.LoggerX;
 
 import java.util.HashMap;
 

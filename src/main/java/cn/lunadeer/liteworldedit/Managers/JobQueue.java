@@ -1,11 +1,11 @@
-package site.deercloud.liteworldedit.Managers;
+package cn.lunadeer.liteworldedit.Managers;
 
+import cn.lunadeer.liteworldedit.Jobs.Job;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import site.deercloud.liteworldedit.Jobs.Job;
 
 import java.util.LinkedList;
 
