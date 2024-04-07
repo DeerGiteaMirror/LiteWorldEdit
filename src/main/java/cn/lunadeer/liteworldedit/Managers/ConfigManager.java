@@ -18,6 +18,7 @@ public class ConfigManager {
         _z_max = _file.getInt("MaxZ", 64);
         _multiplier = _file.getInt("Multiplier", 1);
         _drop_items = _file.getBoolean("DropItems", false);
+        _check_update = _file.getBoolean("CheckUpdate", true);
         _plugin.saveConfig();
     }
 
@@ -68,6 +69,10 @@ public class ConfigManager {
         _plugin.saveConfig();
     }
 
+    public Boolean isCheckUpdate() {
+        return _check_update;
+    }
+
 
     private final LiteWorldEdit _plugin = LiteWorldEdit.instance;
     private FileConfiguration _file;
@@ -81,4 +86,6 @@ public class ConfigManager {
     private Boolean _drop_items;
 
     private Integer _multiplier;
+
+    private Boolean _check_update;
 }

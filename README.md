@@ -4,6 +4,8 @@
 <img src="https://ssl.lunadeer.cn:14437/i/2024/03/28/6604dfebcffd8.png" alt="" width="70%">
 
 ### [开源地址](https://ssl.lunadeer.cn:14446/zhangyuheng/LiteWorldEdit) | [文档地址](https://ssl.lunadeer.cn:14448/doc/3/)
+### [下载页面](https://ssl.lunadeer.cn:14446/zhangyuheng/LiteWorldEdit/releases)
+### [统计页面](https://bstats.org/plugin/bukkit/LiteWorldEdit/21436) | [Hangar](https://hangar.papermc.io/zhangyuheng/LiteWorldEdit)
 
 </div>
 
@@ -33,9 +35,9 @@
 4. 支持填充操作，填充操作需要消耗玩家物品栏中的物品；
 5. 支持自动从背包中的盒子里提取物品；
 6. 禁止超视距操作（128以外），防止玩家利用创世神插件加载大量区块导致服务器卡顿；
-6. 支持自动从背包里的潜影盒补充材料；
-7. 支持设置是否产生掉落物；
-8. 支持设置速度倍率（整数，默认1表示每tick操作一个方块，设置为2则每次操作两个方块）
+7. 支持自动从背包里的潜影盒补充材料；
+8. 支持设置是否产生掉落物；
+9. 支持设置速度倍率（整数，默认1表示每tick操作一个方块，设置为2则每次操作两个方块）
 
 ## 支持版本
 
@@ -117,6 +119,8 @@ MaxZ: 64
 DropItems: false
 
 Multiplier: 1
+
+CheckUpdate: true
 
 Debug: false
 ```

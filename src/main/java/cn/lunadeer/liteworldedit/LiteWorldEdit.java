@@ -21,6 +21,12 @@ public final class LiteWorldEdit extends JavaPlugin {
         Objects.requireNonNull(Bukkit.getPluginCommand("LiteWorldEdit")).setTabCompleter(new Commands());
 
         Metrics metrics = new Metrics(this, 21436);
+        if (config.isCheckUpdate()) {
+            giteaReleaseCheck = new GiteaReleaseCheck(this,
+                    "https://ssl.lunadeer.cn:14446",
+                    "zhangyuheng",
+                    "LiteWorldEdit");
+        }
 
         LoggerX.info("LiteWorldEdit 已加载");
         LoggerX.info("版本: " + getPluginMeta().getVersion());
@@ -52,4 +58,5 @@ public final class LiteWorldEdit extends JavaPlugin {
     public static LiteWorldEdit instance;
     public static ConfigManager config;
     private Cache _cache;
+    private GiteaReleaseCheck giteaReleaseCheck;
 }
