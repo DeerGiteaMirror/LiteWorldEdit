@@ -140,3 +140,7 @@ Debug: false
 Mail: [zhangyuheng@lunadeer.cn](mailto:zhangyuheng@lunadeer.cn)
 
 QQ: 2751268851
+
+## 统计
+
+![bstats](https://bstats.org/signatures/bukkit/LiteWorldEdit.svg)
