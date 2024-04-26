@@ -59,6 +59,12 @@ public class Events implements Listener {
         if (xplayer.getPoints().get(1) != null && xplayer.getPoints().get(2) != null) {
             Point p1 = xplayer.getPoints().get(1);
             Point p2 = xplayer.getPoints().get(2);
+            int deltaX = Math.abs(p1.x - p2.x);
+            int deltaY = Math.abs(p1.y - p2.y);
+            int deltaZ = Math.abs(p1.z - p2.z);
+            if (deltaX > LiteWorldEdit.config.getXMax() || deltaY > LiteWorldEdit.config.getYMax() || deltaZ > LiteWorldEdit.config.getZMax()) {
+                return;
+            }
             ParticleRender.showBoxBorder(LiteWorldEdit.instance, player.getWorld().getName(), p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
         }
     }
