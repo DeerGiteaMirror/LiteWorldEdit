@@ -55,5 +55,11 @@ public class Events implements Listener {
             Notification.info(player, "已选择第二个点: " + x + " " + y + " " + z);
             xplayer.addPoint(2, point);
         }
+
+        if (xplayer.getPoints().get(1) != null && xplayer.getPoints().get(2) != null) {
+            Point p1 = xplayer.getPoints().get(1);
+            Point p2 = xplayer.getPoints().get(2);
+            ParticleRender.showBoxBorder(LiteWorldEdit.instance, player.getWorld().getName(), p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+        }
     }
 }
