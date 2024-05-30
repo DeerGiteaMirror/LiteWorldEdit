@@ -2,6 +2,11 @@ package cn.lunadeer.liteworldedit;
 
 import cn.lunadeer.liteworldedit.Jobs.Job;
 import cn.lunadeer.liteworldedit.Jobs.JobErrCode;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 
 public class Task implements Runnable {
@@ -40,7 +45,8 @@ public class Task implements Runnable {
                 }
                 Player player = job.get_creator();
                 if (re.canContinue()) {
-                    Notification.titleWarn(player, "警告", re.getMessage());
+                    TextComponent warn = Component.text("警告：" + re.getMessage(), Style.style(TextColor.color(TextColor.color(255, 185, 69)), TextDecoration.BOLD));
+                    player.sendActionBar(warn);
                     job = this.xPlayer.popJob();
                     if (job == null) {
                         return;
