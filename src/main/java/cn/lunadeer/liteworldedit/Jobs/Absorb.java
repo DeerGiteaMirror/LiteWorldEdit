@@ -40,9 +40,21 @@ public class Absorb extends Job {
         // 模拟海绵吸水事件
         BlockPlaceEvent event = new BlockPlaceEvent(raw_block, raw_block.getState(), raw_block, new ItemStack(Material.SPONGE), _creator, true, null);
         Bukkit.getPluginManager().callEvent(event);
+        // 获取玩家背包中的下届合金镐
+        HashMap<Integer, ?> pickaxes = getNetherPickaxes(_creator);
+        if (pickaxes.size() == 0) {
+            return JobErrCode.NO_PICKAXE;
+        }
+        ItemStack pickaxe = getUsableNetherPickaxe(pickaxes, _creator);
+        // 没有合适的镐
+        if (pickaxe == null) {
+            return JobErrCode.NOT_ENOUGH_DURATION;
+        }
         if (!event.isCancelled()) {
             raw_block.setType(Material.SPONGE);
             raw_block.setType(Material.AIR);
+            // 损坏镐
+            useNetherPickaxe(pickaxe);
             return JobErrCode.OK;
         } else {
             return JobErrCode.NO_PERMISSION;
