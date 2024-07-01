@@ -1,10 +1,7 @@
 package cn.lunadeer.liteworldedit.Jobs;
 
 import cn.lunadeer.liteworldedit.LoggerX;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
@@ -75,7 +72,9 @@ public class Place extends Job {
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             raw_block.setType(_block);
-            stack.setAmount(stack.getAmount() - 1);
+            if (!_creator.isOp() && _creator.getGameMode() != GameMode.CREATIVE) {
+                stack.setAmount(stack.getAmount() - 1);
+            }
             return JobErrCode.OK;
         } else {
             return JobErrCode.NO_PERMISSION;

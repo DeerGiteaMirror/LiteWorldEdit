@@ -1,10 +1,7 @@
 package cn.lunadeer.liteworldedit.Jobs;
 
 import cn.lunadeer.liteworldedit.LoggerX;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -54,7 +51,9 @@ public class Absorb extends Job {
             raw_block.setType(Material.SPONGE);
             raw_block.setType(Material.AIR);
             // 损坏镐
-            useNetherPickaxe(pickaxe);
+            if (!_creator.isOp() && _creator.getGameMode() != GameMode.CREATIVE) {
+                useNetherPickaxe(pickaxe);
+            }
             return JobErrCode.OK;
         } else {
             return JobErrCode.NO_PERMISSION;

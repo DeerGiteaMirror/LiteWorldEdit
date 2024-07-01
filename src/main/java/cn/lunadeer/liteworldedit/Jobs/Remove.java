@@ -2,10 +2,7 @@ package cn.lunadeer.liteworldedit.Jobs;
 
 import cn.lunadeer.liteworldedit.LiteWorldEdit;
 import cn.lunadeer.liteworldedit.LoggerX;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -53,7 +50,9 @@ public class Remove extends Job {
                 raw_block.getWorld().dropItemNaturally(raw_block.getLocation(), new ItemStack(raw_block.getType()));
             }
             // 损坏镐
-            useNetherPickaxe(pickaxe);
+            if (!_creator.isOp() && _creator.getGameMode() != GameMode.CREATIVE) {
+                useNetherPickaxe(pickaxe);
+            }
             return JobErrCode.OK;
         } else {
             return JobErrCode.NO_PERMISSION;
