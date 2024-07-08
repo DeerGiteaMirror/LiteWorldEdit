@@ -12,4 +12,10 @@ commands:
   LiteWorldEdit:
     description: 简易创世神命令
     usage: /lwe <cmd>
-    aliases: [lwe]
+    aliases: [ lwe ]
+    permission: lwe.command
+    permission-message: 你没有权限使用这个命令。
+permissions:
+  lwe.command:
+    description: 是否允许使用 LiteWorldEdit
+    default: true
