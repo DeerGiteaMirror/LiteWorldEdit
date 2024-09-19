@@ -45,9 +45,10 @@ public class Remove extends Job {
         BlockBreakEvent event = new BlockBreakEvent(raw_block, _creator);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
+            Material block_type = raw_block.getType();
             raw_block.setType(Material.AIR);
             if (LiteWorldEdit.instance.getConfigMgr().isDropItems()) {
-                raw_block.getWorld().dropItemNaturally(raw_block.getLocation(), new ItemStack(raw_block.getType()));
+                raw_block.getWorld().dropItemNaturally(raw_block.getLocation(), new ItemStack(block_type));
             }
             // 损坏镐
             if (!_creator.isOp() && _creator.getGameMode() != GameMode.CREATIVE) {
