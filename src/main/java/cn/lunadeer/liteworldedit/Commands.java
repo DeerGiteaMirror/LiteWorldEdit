@@ -5,6 +5,7 @@ import cn.lunadeer.liteworldedit.JobGenerator.Empty;
 import cn.lunadeer.liteworldedit.JobGenerator.Fill;
 import cn.lunadeer.liteworldedit.JobGenerator.OverLay;
 import cn.lunadeer.liteworldedit.Jobs.Job;
+import cn.lunadeer.liteworldedit.Managers.ConfigManager;
 import cn.lunadeer.liteworldedit.Managers.Point;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -102,11 +103,11 @@ public class Commands implements TabExecutor {
             if (!player.isOp()) {
                 Notification.error(player, "你没有权限。");
             } else {
-                LiteWorldEdit.instance.reloadConfig();
+                LiteWorldEdit.config.reload();
                 Notification.info(player, "已重载配置文件。");
             }
         } else {
-            LiteWorldEdit.instance.reloadConfig();
+            LiteWorldEdit.config.reload();
             LoggerX.info("已重载配置文件。");
         }
     }
