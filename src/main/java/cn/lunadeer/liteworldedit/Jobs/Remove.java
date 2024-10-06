@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Remove extends Job {
@@ -45,10 +46,12 @@ public class Remove extends Job {
         BlockBreakEvent event = new BlockBreakEvent(raw_block, _creator);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
-            Material block_type = raw_block.getType();
+            Collection<ItemStack> drops = raw_block.getDrops(pickaxe, _creator);
             raw_block.setType(Material.AIR);
             if (LiteWorldEdit.instance.getConfigMgr().isDropItems()) {
-                raw_block.getWorld().dropItemNaturally(raw_block.getLocation(), new ItemStack(block_type));
+                for (ItemStack drop : drops) {
+                    raw_block.getWorld().dropItemNaturally(raw_block.getLocation(), drop);
+                }
             }
             // 损坏镐
             if (!_creator.isOp() && _creator.getGameMode() != GameMode.CREATIVE) {
