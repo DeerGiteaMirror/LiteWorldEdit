@@ -34,7 +34,7 @@ public class Remove extends Job {
         }
         // 获取玩家背包中的下届合金镐
         HashMap<Integer, ?> pickaxes = getNetherPickaxes(_creator);
-        if (pickaxes.size() == 0) {
+        if (pickaxes.isEmpty()) {
             return JobErrCode.NO_PICKAXE;
         }
         ItemStack pickaxe = getUsableNetherPickaxe(pickaxes, _creator);

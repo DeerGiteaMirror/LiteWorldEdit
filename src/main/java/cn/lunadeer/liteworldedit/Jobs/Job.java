@@ -91,9 +91,11 @@ public class Job {
             }
             // 如果耐久小于10，提示玩家
             pickaxe_damage = (Damageable) pickaxe_meta;
-            if (pickaxe_damage.getDamage() >= 2031 - 10) {
-                LoggerX.debug(index + " 下界合金镐耐久太低！");
-                continue;
+            if (!pickaxe_meta.isUnbreakable()) {
+                if (pickaxe_damage.getDamage() >= 2031 - 10) {
+                    LoggerX.debug(index + " 下界合金镐耐久太低！");
+                    continue;
+                }
             }
             pickaxe = p;
             break;
@@ -104,9 +106,13 @@ public class Job {
     public static ItemStack useNetherPickaxe(ItemStack pickaxe) {
         int durability = pickaxe.getEnchantmentLevel(Enchantment.DURABILITY);
         double random = Math.random();
+        Damageable pickaxe_damage = (Damageable) pickaxe.getItemMeta();
+        if (pickaxe_damage.isUnbreakable()) {
+            // 无限耐久则不损坏
+            return pickaxe;
+        }
         if (random < 1.0 / (durability + 1)) {
             // 扣除耐久
-            Damageable pickaxe_damage = (Damageable) pickaxe.getItemMeta();
             pickaxe_damage.setDamage(pickaxe_damage.getDamage() + 1);
             pickaxe.setItemMeta(pickaxe_damage);
         }
